@@ -1,19 +1,13 @@
 #!/bin/bash
 
-
-#if [[ $EUID -ne 0 ]]
-#then
-#echo -e "El usuario NO es root, por lo que no se permite ejecutar el script"
-#exit 1
-#fi
+if [ $(id -u) -eq 0 ]; then
 
 if [ -z $1 ]
 then
-  echo "falta opcion"
+echo "falta opcion"
 exit 1
 elif [ -n $1 ]
 then
-# otherwise make first arg as a rental
   opcion=$1
 fi
 
@@ -23,22 +17,27 @@ then
 exit 1
 elif [ -n $2 ]
 then
-# otherwise make first arg as a rental
   usuario=$2
 fi
-
       case  $opcion  in
-		"-d") echo "$usuario ha sido eliminado"
-			userdel -f $usuario ;;
+		"-d")  echo "$usuario ha sido eliminado"
+			userdel -f $usuario;;
 		"-r") echo "La carpeta home de $usuario ha sido eliminada"
 		 rm -r /home/$usuario;;
-		"-a") echo "La carpeta home de $usuario ha sido modificada"
+		"-a") echo "La carpeta home de $usuario ha sido copiada a archives"
 			if [ ! -d "/archives" ]
 			then
 			mkdir -p /archives
 			fi
 			tar -czf $usuario.tar.gz /home/$usuario
 			mv /home/ausias/Escriptori/$usuario.tar.gz /archives/;;
+		"-l") echo "Usuario deshabilitado"
+			usermod -L -e 1 $usuario;;
 		*)    echo "no se ha encontrado la función";;
 
      esac
+else
+  echo "Solo el root del sistema puede hacer modificacioness"
+  exit 3
+fi
+
