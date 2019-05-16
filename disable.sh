@@ -37,8 +37,8 @@ fi
 			then
 			mkdir -p /archives
 			fi
-			tar -czf $usuario.tar.gz /home/$usuario/;;
-			#mv /home/$usuario/$usuario.tar.gz /archives;;
+			tar -czf $usuario.tar.gz /home/$usuario
+			mv /home/ausias/Escriptori/$usuario.tar.gz /archives/;;
 		*)    echo "no se ha encontrado la función";;
 
      esac
